@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #74ABE2, #5563DE);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      padding: 40px 50px;
+      width: 360px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      text-align: left;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: -8px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #5563DE;
+      box-shadow: 0 0 5px rgba(85, 99, 222, 0.4);
+    }
+
+    button {
+      background: #5563DE;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #4050c0;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .footer a {
+      color: #5563DE;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .errors {
+      background: #ffeaea;
+      border: 1px solid #ff6b6b;
+      color: #b00020;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      text-align: left;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Регистрация</h1>
+
+    {% if errors %}
+    <div class="errors">
+        {% for field, field_errors in errors.items %}
+        {% for error in field_errors %}
+            <p>⚠️ {{ error }}</p>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <form method="POST">
+      {% csrf_token %}
+      <label>Email</label>
+      <input type="email" name="email" placeholder="Введите email" required>
+
+      <label>Имя</label>
+      <input type="text" name="name" placeholder="Введите имя" required>
+
+      <label>Пароль</label>
+      <input type="password" name="password" placeholder="Введите пароль" required>
+
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <div class="footer">
+      Уже есть аккаунт? <a href="{% url 'login_page' %}">Войти</a>
+    </div>
+  </div>
+</body>
+</html>

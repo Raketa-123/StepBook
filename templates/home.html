@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Главная страница</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #6dd5fa, #2980b9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    a.button {
+      background: #fff;
+      color: #2980b9;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    a.button:hover {
+      background: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% if user.is_authenticated %}
+      <h1>Добро пожаловать, {{ user.name }} 👋</h1>
+      <p>Рад тебя видеть! Здесь будет твоя главная страница.</p>
+      <a href="{% url 'logout_page' %}" class="button">Выйти</a>
+    {% else %}
+      <h1>Привет, гость 👀</h1>
+      <p>Похоже, ты не вошёл в аккаунт.</p>
+      <a href="{% url 'login_page' %}" class="button">Войти</a>
+      <a href="{% url 'register_page' %}" class="button" style="margin-left:10px;">Регистрация</a>
+    {% endif %}
+  </div>
+</body>
+</html>

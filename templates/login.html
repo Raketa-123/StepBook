@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #74ABE2, #5563DE);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 50px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 360px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 26px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      text-align: left;
+      color: #555;
+      font-weight: 500;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #5563DE;
+      outline: none;
+    }
+
+    button {
+      background: #5563DE;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #4452c2;
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #5563DE;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Вход</h1>
+
+    {% if errors %}
+      <div class="error">
+        {% for field, field_errors in errors.items %}
+          {% for error in field_errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      <label>Имя пользователя</label>
+      <input type="text" name="username" placeholder="Введите имя" required>
+
+      <label>Пароль</label>
+      <input type="password" name="password" placeholder="Введите пароль" required>
+
+      <button type="submit">Войти</button>
+    </form>
+
+    <div class="footer">
+      Нет аккаунта? <a href="{% url 'register_page' %}">Зарегистрироваться</a>
+    </div>
+  </div>
+</body>
+</html>
