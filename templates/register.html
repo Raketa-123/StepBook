@@ -6,26 +6,28 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #74ABE2, #5563DE);
+      background: linear-gradient(135deg, #2c3e50, #4b6cb7, #182848);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 0;
+      color: #fff;
     }
 
     .container {
-      background: #fff;
+      background: rgba(0, 0, 0, 0.6);
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
       padding: 40px 50px;
       width: 360px;
       text-align: center;
+      backdrop-filter: blur(10px);
     }
 
     h1 {
       margin-bottom: 25px;
-      color: #333;
+      color: #a7bff4;
     }
 
     form {
@@ -37,26 +39,28 @@
     label {
       text-align: left;
       font-size: 14px;
-      color: #444;
+      color: #d6dcf5;
       margin-bottom: -8px;
     }
 
     input {
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #444;
       outline: none;
       transition: 0.3s;
       font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
 
     input:focus {
-      border-color: #5563DE;
-      box-shadow: 0 0 5px rgba(85, 99, 222, 0.4);
+      border-color: #9b23ea;
+      box-shadow: 0 0 6px rgba(155, 35, 234, 0.4);
     }
 
     button {
-      background: #5563DE;
+      background: linear-gradient(135deg, #5f72be, #9b23ea);
       color: white;
       padding: 12px;
       border: none;
@@ -67,17 +71,18 @@
     }
 
     button:hover {
-      background: #4050c0;
+      opacity: 0.9;
+      transform: scale(1.05);
     }
 
     .footer {
       margin-top: 20px;
       font-size: 14px;
-      color: #555;
+      color: #ccc;
     }
 
     .footer a {
-      color: #5563DE;
+      color: #a7bff4;
       text-decoration: none;
       font-weight: 500;
     }
@@ -87,9 +92,9 @@
     }
 
     .errors {
-      background: #ffeaea;
+      background: rgba(255, 0, 0, 0.1);
       border: 1px solid #ff6b6b;
-      color: #b00020;
+      color: #ff6b6b;
       padding: 10px;
       border-radius: 10px;
       font-size: 13px;
@@ -111,7 +116,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
 
     <form method="POST">
       {% csrf_token %}

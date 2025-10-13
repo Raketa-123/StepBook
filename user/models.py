@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField("активированный аккаунт", default=True)
     is_staff = models.BooleanField(default=False)
     activation_code = models.UUIDField("код активации", unique=True, default=uuid.uuid4)
-
+    purchased_books = models.ManyToManyField('book.Book', blank=True, related_name='buyers')
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework_simplejwt.tokens import RefreshToken
 from user.serializers import UserRegisterSerializer, LoginSerializer
 from user.models import User
@@ -11,8 +11,7 @@ from django.urls import reverse
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-
+from book.models import Book
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -78,10 +77,10 @@ class LoginPage(View):
         return render(request, self.template_name)
 
     def post(self, request):
-        username = request.POST.get("username")
+        email = request.POST.get("email")
         password = request.POST.get("password")
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('/')
@@ -90,12 +89,14 @@ class LoginPage(View):
             return render(request, self.template_name, {"errors": errors})
         
 
+
 @method_decorator(login_required(login_url='login_page'), name='dispatch')
 class HomePage(View):
     template_name = 'home.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        books = Book.objects.all()
+        return render(request, self.template_name, {'books': books})
 
 
 from django.contrib.auth import logout
@@ -104,3 +105,12 @@ class LogoutPage(View):
     def get(self, request):
         logout(request)
         return redirect('login_page')
+    
+
+@method_decorator(login_required(login_url='login_page'), name='dispatch')
+class ProfilePage(View):
+    template_name = "profile.html"
+
+    def get(self, request):
+        purchased_books = request.user.purchased_books.all()
+        return render(request, self.template_name, {"purchased_books": purchased_books})

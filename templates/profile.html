@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Личный кабинет</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #6dd5fa, #2980b9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .books {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .book {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .book:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .book img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .book h3 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+    }
+
+    .book a {
+      background: #fff;
+      color: #2980b9;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .book a:hover {
+      background: #f1f1f1;
+    }
+
+    .logout {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .logout a {
+      color: #fff;
+      text-decoration: none;
+      border: 2px solid #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .logout a:hover {
+      background: #fff;
+      color: #2980b9;
+    }
+
+    .empty {
+      text-align: center;
+      font-size: 18px;
+      opacity: 0.8;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добро пожаловать, {{ user.name }} 👋</h1>
+
+    <h2>Мои книги</h2>
+
+    {% if purchased_books %}
+      <div class="books">
+        {% for book in purchased_books %}
+          <div class="book">
+            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+            <h3>{{ book.title }}</h3>
+            <a href="{{ book.file.url }}" download>📥 Скачать</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">Вы ещё ничего не купили 📚</div>
+    {% endif %}
+
+    <div class="logout">
+      <a href="{% url 'logout_page' %}">Выйти</a>
+    </div>
+  </div>
+</body>
+</html>

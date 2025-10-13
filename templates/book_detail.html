@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ book.title }} — StepBook</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #6dd5fa, #2980b9);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .author {
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    .description {
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .price {
+      font-size: 20px;
+      color: #ffda79;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #fff;
+      color: #2980b9;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 5px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #f1f1f1;
+    }
+
+    .back-btn {
+      background: rgba(255,255,255,0.3);
+      color: #fff;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ book.title }}</h1>
+    <p class="author">{{ book.author }}</p>
+
+    {% if book.cover %}
+      <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+    {% endif %}
+
+    <p class="description">{{ book.description }}</p>
+    <div class="price">{{ book.price }} ₽</div>
+
+    <div>
+      <a href="{% url 'home_page' %}" class="btn back-btn">← Назад</a>
+
+      {% if purchased %}
+        <a href="{{ book.file.url }}" download class="btn">📥 Скачать PDF</a>
+      {% else %}
+        <form method="post" action="{% url 'buy_book' book.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn">💳 Купить за {{ book.price }}₽</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
