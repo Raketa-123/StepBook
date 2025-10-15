@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
+from django.db.models import Q
+
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
@@ -14,9 +16,20 @@ class BookViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+
 def home_page(request):
+    query = request.GET.get('q', '')
     books = Book.objects.all()
-    return render(request, 'home.html', {"books": books})
+
+    if query:
+        books = books.filter(title__icontains=query) | books.filter(author__icontains=query)
+
+    context = {
+        "books": books,
+        "query": query,
+    }
+    return render(request, "home.html", context)
+
 
 class BookDetailView(DetailView):
     model = Book
@@ -29,6 +42,7 @@ class BookDetailView(DetailView):
         user = self.request.user
         context['purchased'] = user.is_authenticated and book in user.purchased_books.all()
         return context
+
 
 @login_required
 def buy_book(request, pk):

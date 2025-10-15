@@ -3,104 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ book.title }} — StepBook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #6dd5fa, #2980b9);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    :root{
+      --bg1:#0f1720;   /* very dark */
+      --bg2:#0b1220;   /* gradient */
+      --card: rgba(255,255,255,0.04);
+      --muted: #9fb3d6;
+      --accent: #8fbfff;
+      --accent-2: #9b8bff;
+      --gold: #ffda79;
+      --glass-border: rgba(255,255,255,0.06);
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
     }
 
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    html,body{height:100%;margin:0;font-family: Inter, "Segoe UI", Tahoma, sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eaf2ff;-webkit-font-smoothing:antialiased;}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+    .card{
+      width:100%;
+      max-width:760px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(8px) saturate(120%);
     }
 
-    img {
-      max-width: 100%;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    .top{
+      display:flex;
+      gap:24px;
+      align-items:flex-start;
+      margin-bottom:18px;
     }
 
-    h1 {
-      margin-bottom: 10px;
+    .cover{
+      width:200px;
+      min-width:140px;
+      height: 280px;
+      border-radius:10px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cover img{width:100%;height:100%;object-fit:cover;display:block;}
+
+    .meta{flex:1;}
+    h1{margin:0;font-size:22px;letter-spacing:0.2px}
+    .author{margin-top:6px;color:var(--muted);font-size:14px;font-style:italic}
+    .description{margin-top:14px;color: #d7e8ff;line-height:1.55;}
+    .price{
+      margin-top:14px;
+      font-weight:700;
+      color:var(--gold);
+      font-size:18px;
     }
 
-    .author {
-      font-style: italic;
-      margin-bottom: 15px;
+    .actions{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+    .btn{
+      padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;border:none;cursor:pointer;
+      transition: transform .14s ease, box-shadow .14s ease;
+      display:inline-flex;align-items:center;gap:10px;
     }
-
-    .description {
-      margin-bottom: 20px;
-      line-height: 1.5;
+    .btn--ghost{
+      background:transparent;color:#cfe7ff;border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
     }
-
-    .price {
-      font-size: 20px;
-      color: #ffda79;
-      margin-bottom: 20px;
-      font-weight: bold;
+    .btn--primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color: #041028;
+      box-shadow: 0 6px 20px rgba(67,109,189,0.16);
     }
+    .btn:hover{transform:translateY(-4px)}
+    .btn--download{background:linear-gradient(90deg,#fff3d9,#ffea9a);color:#07203a}
 
-    .btn {
-      display: inline-block;
-      background: #fff;
-      color: #2980b9;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 5px;
-      transition: 0.3s;
-    }
+    .back-link{color:var(--muted);font-size:14px;text-decoration:none;margin-right:auto}
+    .small{font-size:13px;color:var(--muted);margin-top:8px}
 
-    .btn:hover {
-      background: #f1f1f1;
-    }
-
-    .back-btn {
-      background: rgba(255,255,255,0.3);
-      color: #fff;
-    }
-
-    .back-btn:hover {
-      background: rgba(255,255,255,0.5);
+    @media (max-width:640px){
+      .top{flex-direction:column;align-items:center}
+      .cover{width:160px;height:230px}
+      .meta{text-align:center}
+      .back-link{display:block;margin:0 auto 6px}
+      .actions{justify-content:center}
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>{{ book.title }}</h1>
-    <p class="author">{{ book.author }}</p>
+  <div class="wrap">
+    <article class="card">
+      <div class="top">
+        <div class="cover">
+          {% if book.cover %}
+            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+          {% else %}
+            <svg width="60" height="80" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <rect width="60" height="80" rx="6" fill="#16202b"/>
+            </svg>
+          {% endif %}
+        </div>
 
-    {% if book.cover %}
-      <img src="{{ book.cover.url }}" alt="{{ book.title }}">
-    {% endif %}
+        <div class="meta">
+          <a href="{% url 'home_page' %}" class="back-link">← Назад в каталог</a>
+          <h1>{{ book.title }}</h1>
+          <div class="author">{{ book.author }}</div>
+          <div class="small">Опубликовано: {{ book.published_date|default:"—" }}</div>
 
-    <p class="description">{{ book.description }}</p>
-    <div class="price">{{ book.price }} ₽</div>
+          <p class="description">{{ book.description }}</p>
+          <div class="price">{{ book.price }} ₽</div>
 
-    <div>
-      <a href="{% url 'home_page' %}" class="btn back-btn">← Назад</a>
-
-      {% if purchased %}
-        <a href="{{ book.file.url }}" download class="btn">📥 Скачать PDF</a>
-      {% else %}
-        <form method="post" action="{% url 'buy_book' book.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn">💳 Купить за {{ book.price }}₽</button>
-        </form>
-      {% endif %}
-    </div>
+          <div class="actions">
+            {% if purchased %}
+              <a class="btn btn--download" href="{{ book.file.url }}" download>📥 Скачать PDF</a>
+              <a class="btn btn--ghost" href="{% url 'home_page' %}">Продолжить покупки</a>
+            {% else %}
+              <form method="post" action="{% url 'buy_book' book.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn--primary">💳 Купить за {{ book.price }}₽</button>
+              </form>
+              <a class="btn btn--ghost" href="{% url 'home_page' %}">← Вернуться</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </article>
   </div>
 </body>
 </html>

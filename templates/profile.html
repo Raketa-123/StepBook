@@ -2,131 +2,79 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Личный кабинет</title>
+  <title>Личный кабинет — StepBook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #6dd5fa, #2980b9);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root{
+      --bg1:#071226;--bg2:#061426;
+      --card: rgba(255,255,255,0.02);
+      --muted:#9fb7dc;--accent:#9bbcff;
+      --radius:14px;--shadow: 0 10px 30px rgba(3,8,20,0.6);
     }
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Tahoma, sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eaf4ff}
+    .wrap{max-width:980px;margin:36px auto;padding:20px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.04);box-shadow:var(--shadow);backdrop-filter:blur(6px)}
+    .head{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+    .avatar{width:84px;height:84px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#7fb3ff,#b49bff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#041028}
+    .meta h1{margin:0;font-size:20px}
+    .meta p{margin:4px 0 0;color:var(--muted)}
 
-    .container {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 800px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
+    h2{margin:18px 0 12px;font-size:18px}
+    .books{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+    .card-book{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,0.04)}
+    .card-book img{width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+    .card-book h3{margin:8px 0 6px;font-size:15px}
+    .card-book a{display:inline-block;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg,#ffffff10,#ffffff06);text-decoration:none;color:#eaf4ff;font-weight:700}
+    .empty{padding:18px;color:var(--muted);text-align:center;border-radius:10px;background:rgba(255,255,255,0.01)}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    .logout{margin-top:18px;text-align:center}
+    .logout a{padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);text-decoration:none;color:#eaf4ff}
 
-    .books {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-    }
-
-    .book {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      transition: 0.3s;
-    }
-
-    .book:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-3px);
-    }
-
-    .book img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .book h3 {
-      margin: 10px 0 5px;
-      font-size: 18px;
-    }
-
-    .book a {
-      background: #fff;
-      color: #2980b9;
-      text-decoration: none;
-      padding: 8px 15px;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .book a:hover {
-      background: #f1f1f1;
-    }
-
-    .logout {
-      display: block;
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .logout a {
-      color: #fff;
-      text-decoration: none;
-      border: 2px solid #fff;
-      padding: 10px 20px;
-      border-radius: 10px;
-      transition: 0.3s;
-    }
-
-    .logout a:hover {
-      background: #fff;
-      color: #2980b9;
-    }
-
-    .empty {
-      text-align: center;
-      font-size: 18px;
-      opacity: 0.8;
-      margin-top: 20px;
-    }
+    .back{margin-top:18px;text-align:center}
+    .back a{padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);text-decoration:none;color:#eaf4ff}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Добро пожаловать, {{ user.name }} 👋</h1>
-
-    <h2>Мои книги</h2>
-
-    {% if purchased_books %}
-      <div class="books">
-        {% for book in purchased_books %}
-          <div class="book">
-            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
-            <h3>{{ book.title }}</h3>
-            <a href="{{ book.file.url }}" download>📥 Скачать</a>
-          </div>
-        {% endfor %}
+  <div class="wrap">
+    <div class="panel">
+      <div class="head">
+        <div class="avatar">
+          {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="{{ user.name }}" style="width:100%;height:100%;object-fit:cover">
+          {% else %}
+            {{ user.name|slice:":1"|upper }}
+          {% endif %}
+        </div>
+        <div class="meta">
+          <h1>Добро пожаловать, {{ user.name }} 👋</h1>
+          <p>{{ user.email }}</p>
+        </div>
       </div>
-    {% else %}
-      <div class="empty">Вы ещё ничего не купили 📚</div>
-    {% endif %}
 
-    <div class="logout">
-      <a href="{% url 'logout_page' %}">Выйти</a>
+      <h2>Мои книги</h2>
+
+      {% if purchased_books %}
+        <div class="books">
+          {% for book in purchased_books %}
+            <div class="card-book">
+              {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+              {% endif %}
+              <h3>{{ book.title }}</h3>
+              <a href="{{ book.file.url }}" download>📥 Скачать</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">Вы ещё ничего не купили. Самое время выбрать книгу 📚</div>
+      {% endif %}
+
+      <div class="logout">
+        <a href="{% url 'logout_page' %}">Выйти</a>
+      </div>
+      <div class="back">
+        <a href="{% url 'home_page' %}">В главное меню</a>
+      </div>
     </div>
   </div>
 </body>

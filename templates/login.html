@@ -2,112 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вход</title>
+  <title>Вход — StepBook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #2c3e50, #4b6cb7, #182848);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-      color: #fff;
+    :root{
+      --bg:#071223; --card: rgba(255,255,255,0.02);
+      --accent:#9bbcff; --muted:#a9c3ea;
+      --radius:14px; --shadow:0 12px 30px rgba(3,8,20,0.6);
     }
-
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      padding: 40px 50px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      width: 360px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      color: #a7bff4;
-      font-size: 26px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    label {
-      text-align: left;
-      color: #d6dcf5;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #444;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      transition: 0.3s;
-    }
-
-    input:focus {
-      border-color: #9b23ea;
-      outline: none;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    button {
-      background: linear-gradient(135deg, #5f72be, #9b23ea);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.2s, opacity 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.05);
-    }
-
-    .footer {
-      margin-top: 20px;
-      color: #ccc;
-      font-size: 14px;
-    }
-
-    .footer a {
-      color: #a7bff4;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    .error {
-      background: rgba(255, 0, 0, 0.1);
-      color: #ff6b6b;
-      border: 1px solid #ff6b6b;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 15px;
-      font-size: 13px;
-      text-align: left;
-    }
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Tahoma, sans-serif;background:linear-gradient(180deg,#05101a,#071522);color:#ecf6ff;display:flex;align-items:center;justify-content:center}
+    .panel{width:100%;max-width:420px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+    h1{margin:0 0 8px;font-size:22px;color:var(--accent)}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted);text-align:left}
+    input{padding:11px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf6ff;font-size:15px}
+    button{margin-top:6px;padding:12px;border-radius:10px;border:none;background:linear-gradient(90deg,#7fb3ff,#a98bff);font-weight:700;color:#041028;cursor:pointer}
+    .footer{margin-top:14px;text-align:center;color:var(--muted);font-size:14px}
+    .error{background:rgba(255,80,80,0.06);color:#ffd7d7;padding:10px;border-radius:8px;border:1px solid rgba(255,80,80,0.08)}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Вход</h1>
+  <div class="panel">
+    <h1>Вход в StepBook</h1>
+    <p class="lead">Рады снова видеть — войдите в аккаунт, чтобы продолжить.</p>
 
     {% if errors %}
       <div class="error">
@@ -121,17 +39,17 @@
 
     <form method="POST">
       {% csrf_token %}
-      <label>Почта</label>
-      <input type="text" name="email" placeholder="Введите почту" required>
+      <label for="email">Почта</label>
+      <input id="email" type="text" name="email" placeholder="you@mail.com" required>
 
-      <label>Пароль</label>
-      <input type="password" name="password" placeholder="Введите пароль" required>
+      <label for="password">Пароль</label>
+      <input id="password" type="password" name="password" placeholder="••••••••" required>
 
       <button type="submit">Войти</button>
     </form>
 
     <div class="footer">
-      Нет аккаунта? <a href="{% url 'register_page' %}">Зарегистрироваться</a>
+      Нет аккаунта? <a href="{% url 'register_page' %}" style="color:var(--accent);text-decoration:none;font-weight:700">Зарегистрироваться</a>
     </div>
   </div>
 </body>

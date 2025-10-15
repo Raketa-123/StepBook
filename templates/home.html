@@ -2,219 +2,80 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>StepBook Market — Главная</title>
+  <title>StepBook — Каталог</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #6dd5fa, #2980b9);
-      color: #fff;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg1:#0b1117; --bg2:#07101a;
+      --card: rgba(255,255,255,0.03);
+      --muted:#98b8df; --accent:#8fbfff;
+      --radius:12px;
+      --shadow: 0 8px 28px rgba(3,8,20,0.6);
     }
+    html,body{height:100%;margin:0;font-family:Inter,"Segoe UI",Tahoma,sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#e9f4ff}
+    .site{max-width:1100px;margin:40px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#6fb7ff,#9b8bff);display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:#041028}
+    h1{margin:0;font-size:20px}
+    .search{margin-left:18px;flex:1}
+    .search input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#eaf4ff}
+    .user-link{color:var(--accent);text-decoration:none;font-weight:600;margin-left:15px;white-space:nowrap}
+    .user-link:hover{text-decoration:underline}
 
-    header {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      backdrop-filter: blur(8px);
-    }
-
-    header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0;
-    }
-
-    header nav {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    header a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    header a:hover {
-      color: #ffda79;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
-      padding: 50px 20px;
-      justify-items: center;
-    }
-
-    .book-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      width: 100%;
-      max-width: 280px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      transition: 0.3s;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    }
-
-    .book-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-    }
-
-    .book-cover {
-      width: 100%;
-      height: 360px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-
-    .book-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .book-author {
-      color: #e3e3e3;
-      margin-bottom: 12px;
-    }
-
-    .book-description {
-      font-size: 14px;
-      color: #f1f1f1;
-      margin-bottom: 12px;
-      height: 55px;
-      overflow: hidden;
-    }
-
-    .book-price {
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffda79;
-      margin-bottom: 15px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #fff;
-      color: #2980b9;
-      padding: 8px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #f1f1f1;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(5px);
-      margin-top: 50px;
-      color: #ddd;
-      font-size: 14px;
-    }
-
-    /* 📱 Адаптивность */
-    @media (max-width: 768px) {
-      header {
-        justify-content: center;
-        text-align: center;
-      }
-
-      header h1 {
-        font-size: 22px;
-        margin-bottom: 10px;
-      }
-
-      .book-cover {
-        height: 280px;
-      }
-
-      .book-title {
-        font-size: 18px;
-      }
-
-      .book-price {
-        font-size: 16px;
-      }
-
-      .btn {
-        padding: 6px 12px;
-        font-size: 14px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 10px;
-        gap: 20px;
-      }
-
-      .book-card {
-        padding: 15px;
-      }
-
-      .book-cover {
-        height: 220px;
-      }
-
-      .book-title {
-        font-size: 16px;
-      }
-
-      .book-description {
-        height: auto;
-      }
-    }
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
+    .book{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:12px;text-align:left;border:1px solid rgba(255,255,255,0.04);box-shadow:var(--shadow);transition:transform .15s ease}
+    .book:hover{transform:translateY(-6px)}
+    .book img{width:100%;height:220px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+    .book h3{margin:6px 0 4px;font-size:16px}
+    .book p{margin:0;color:var(--muted);font-size:13px}
+    .book .price{margin-top:8px;font-weight:700;color:#ffd27a}
+    .book a{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,#ffffff10,#ffffff06);color:#eaf4ff;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.03)}
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
+    @media (max-width:480px){.book img{height:180px}}
   </style>
 </head>
 <body>
-  <header>
-    <h1>📚 StepBook Market</h1>
-    <nav>
-      {% if user.is_authenticated %}
-        <span>Привет, {{ user.name }}!</span>
-        <a href="{% url 'logout_page' %}">Выйти</a>
-      {% else %}
-        <a href="{% url 'login_page' %}">Войти</a>
-        <a href="{% url 'register_page' %}">Регистрация</a>
-      {% endif %}
-    </nav>
-  </header>
-
-  <div class="container">
-    {% for book in books %}
-      <div class="book-card">
-        <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="book-cover">
-        <div class="book-title">{{ book.title }}</div>
-        <div class="book-author">{{ book.author }}</div>
-        <div class="book-description">{{ book.description|truncatechars:120 }}</div>
-        <div class="book-price">{{ book.price }} ₽</div>
-        <a href="{% url 'book_detail' book.id %}" class="btn">Подробнее</a>
+  <main class="site">
+    <header>
+      <div class="brand">
+        <div class="logo">SB</div>
+        <div>
+          <h1>StepBook — библиотека</h1>
+          <div style="color:var(--muted);font-size:13px">Лучшие книги в цифровом доступе</div>
+        </div>
       </div>
-    {% empty %}
-      <p>Пока нет доступных книг 😔</p>
-    {% endfor %}
-  </div>
 
-  <footer>
-    © 2025 StepBook Market — дипломный проект
-  </footer>
+      <div style="display:flex;align-items:center;gap:18px;">
+        <form method="get" action="" style="width:260px;max-width:48%;">
+          <input type="search" name="q" placeholder="Поиск по названию или автору">
+        </form>
+
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'profile_page' %}" class="user-link">👤 {{ request.user.name }}</a>
+        {% else %}
+          <a href="{% url 'login_page' %}" class="user-link">Войти</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <section class="grid">
+      {% for book in books %}
+        <article class="book">
+          {% if book.cover %}
+            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+          {% endif %}
+          <h3>{{ book.title }}</h3>
+          <p>{{ book.author }}</p>
+          <div class="price">{{ book.price }} ₽</div>
+          <a href="{% url 'book_detail' book.id %}">Подробнее →</a>
+        </article>
+      {% endfor %}
+    </section>
+
+    <footer>
+      © {{ now.year }} StepBook — уютная библиотека. Все права защищены.
+    </footer>
+  </main>
 </body>
 </html>

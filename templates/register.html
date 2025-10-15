@@ -2,137 +2,56 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Регистрация</title>
+  <title>Регистрация — StepBook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #2c3e50, #4b6cb7, #182848);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-      color: #fff;
+    :root{
+      --bg1:#071428;--bg2:#04111a;--accent:#9bbcff;--muted:#b9d3f6;
+      --radius:14px;--shadow:0 12px 30px rgba(3,8,20,0.6);
     }
-
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-      padding: 40px 50px;
-      width: 360px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
-    h1 {
-      margin-bottom: 25px;
-      color: #a7bff4;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    label {
-      text-align: left;
-      font-size: 14px;
-      color: #d6dcf5;
-      margin-bottom: -8px;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #444;
-      outline: none;
-      transition: 0.3s;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    input:focus {
-      border-color: #9b23ea;
-      box-shadow: 0 0 6px rgba(155, 35, 234, 0.4);
-    }
-
-    button {
-      background: linear-gradient(135deg, #5f72be, #9b23ea);
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.05);
-    }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    .footer a {
-      color: #a7bff4;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    .errors {
-      background: rgba(255, 0, 0, 0.1);
-      border: 1px solid #ff6b6b;
-      color: #ff6b6b;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 13px;
-      text-align: left;
-      margin-bottom: 15px;
-    }
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Tahoma, sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eef8ff;display:flex;align-items:center;justify-content:center}
+    .box{width:100%;max-width:440px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04)}
+    h1{margin:0 0 8px;color:var(--accent)}
+    p.lead{margin:0 0 16px;color:var(--muted)}
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted);text-align:left}
+    input{padding:11px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf6ff}
+    button{padding:12px;border-radius:10px;border:none;background:linear-gradient(90deg,#7fb3ff,#a98bff);font-weight:700;color:#041028;cursor:pointer;margin-top:6px}
+    .footer{margin-top:12px;text-align:center;color:var(--muted)}
+    .errors{background:rgba(255,80,80,0.06);color:#ffd7d7;padding:10px;border-radius:8px;border:1px solid rgba(255,80,80,0.08)}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Регистрация</h1>
+  <div class="box">
+    <h1>Создать аккаунт</h1>
+    <p class="lead">Присоединяйтесь — получите доступ к библиотеке.</p>
 
     {% if errors %}
-    <div class="errors">
+      <div class="errors">
         {% for field, field_errors in errors.items %}
-        {% for error in field_errors %}
-            <p>⚠️ {{ error }}</p>
+          {% for error in field_errors %}
+            <div>⚠️ {{ error }}</div>
+          {% endfor %}
         {% endfor %}
-        {% endfor %}
-    </div>
+      </div>
     {% endif %}
 
     <form method="POST">
       {% csrf_token %}
       <label>Email</label>
-      <input type="email" name="email" placeholder="Введите email" required>
+      <input type="email" name="email" placeholder="you@mail.com" required>
 
       <label>Имя</label>
-      <input type="text" name="name" placeholder="Введите имя" required>
+      <input type="text" name="name" placeholder="Ваше имя" required>
 
       <label>Пароль</label>
-      <input type="password" name="password" placeholder="Введите пароль" required>
+      <input type="password" name="password" placeholder="Придумайте пароль" required>
 
       <button type="submit">Зарегистрироваться</button>
     </form>
 
     <div class="footer">
-      Уже есть аккаунт? <a href="{% url 'login_page' %}">Войти</a>
+      Уже есть аккаунт? <a href="{% url 'login_page' %}" style="color:var(--accent);text-decoration:none;font-weight:700">Войти</a>
     </div>
   </div>
 </body>
