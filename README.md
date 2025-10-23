@@ -29,7 +29,6 @@
 
 - **Backend:** Django, Django REST Framework  
 - **Frontend:** HTML, CSS  
-- **Аутентификация:** JWT (JSON Web Token)  
 - **База данных:** SQLite (для разработки)  
 - **Версионный контроль:** Git & GitHub  
 
