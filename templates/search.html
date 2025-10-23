@@ -1,0 +1,35 @@
+{% extends "home.html" %}
+
+{% block title %}Результаты поиска — StepBook{% endblock %}
+
+{% block content %}
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <h2>Результаты поиска по запросу: “{{ query }}”</h2>
+    <a href="{% url 'home_page' %}" 
+       style="padding:8px 14px;border-radius:8px;
+              background:linear-gradient(90deg,#ffffff10,#ffffff06);
+              border:1px solid rgba(255,255,255,0.05);
+              color:#8fbfff;text-decoration:none;font-weight:600;
+              transition:background .2s;">
+      ← Назад в каталог
+    </a>
+  </div>
+
+  {% if books %}
+    <section class="grid">
+      {% for book in books %}
+        <article class="book">
+          {% if book.cover %}
+            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+          {% endif %}
+          <h3>{{ book.title }}</h3>
+          <p>{{ book.author }}</p>
+          <div class="price">{{ book.price }} ₽</div>
+          <a href="{% url 'book_detail' book.id %}">Подробнее →</a>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <p style="color:var(--muted)">По вашему запросу ничего не найдено.</p>
+  {% endif %}
+{% endblock %}

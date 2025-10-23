@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>StepBook — Каталог</title>
+  <title>{% block title %}StepBook — Каталог{% endblock %}</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     :root{
@@ -33,6 +33,18 @@
     .book a{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,#ffffff10,#ffffff06);color:#eaf4ff;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.03)}
     footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
     @media (max-width:480px){.book img{height:180px}}
+
+    /* Пагинация */
+    .pagination {display:flex;justify-content:center;gap:6px;margin:24px 0;flex-wrap:wrap;}
+    .pagination a, .pagination span {
+      padding:6px 10px;
+      border-radius:8px;
+      background:#ffffff08;
+      color:#fff;
+      text-decoration:none;
+    }
+    .pagination span.current {background:#2a72ff;font-weight:600;}
+    .pagination a:hover {background:#ffffff15;}
   </style>
 </head>
 <body>
@@ -47,8 +59,8 @@
       </div>
 
       <div style="display:flex;align-items:center;gap:18px;">
-        <form method="get" action="" style="width:260px;max-width:48%;">
-          <input type="search" name="q" placeholder="Поиск по названию или автору">
+        <form method="get" action="{% url 'search_page' %}" style="width:260px;max-width:48%;">
+          <input type="search" name="q" placeholder="Поиск по названию или автору" value="{{ query|default:'' }}">
         </form>
 
         {% if request.user.is_authenticated %}
@@ -59,6 +71,8 @@
       </div>
     </header>
 
+    {% block content %}
+    <!-- Секция книг -->
     <section class="grid">
       {% for book in books %}
         <article class="book">
@@ -70,8 +84,46 @@
           <div class="price">{{ book.price }} ₽</div>
           <a href="{% url 'book_detail' book.id %}">Подробнее →</a>
         </article>
+      {% empty %}
+        <p style="color:var(--muted)">Нет книг для отображения</p>
       {% endfor %}
     </section>
+
+    <!-- ПАГИНАЦИЯ -->
+    {% if books.has_other_pages %}
+      <div class="pagination">
+        {% if books.has_previous %}
+          <a href="?page=1">« Первая</a>
+          <a href="?page={{ books.previous_page_number }}">‹ Назад</a>
+        {% endif %}
+
+        {% for num in books.paginator.page_range %}
+          {% if books.number == num %}
+            <span class="current">{{ num }}</span>
+          {% elif num > books.number|add:'-3' and num < books.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if books.has_next %}
+          <a href="?page={{ books.next_page_number }}">Вперёд ›</a>
+          <a href="?page={{ books.paginator.num_pages }}">Последняя »</a>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% endblock %}
+
+    <!-- Кнопка "Добавить книгу" -->
+    {% if user.is_authenticated %}
+    <div style="text-align:right; margin:10px;">
+      {% if request.path != '/books/add/' %}
+        <a href="{% url 'add_book' %}" 
+           style="background:#2a72ff; padding:8px 14px; border-radius:8px; color:white; text-decoration:none;">
+           ➕ Добавить книгу
+        </a>
+      {% endif %}
+    </div>
+    {% endif %}
 
     <footer>
       © {{ now.year }} StepBook — уютная библиотека. Все права защищены.

@@ -108,7 +108,6 @@
         </div>
 
         <div class="meta">
-          <a href="{% url 'home_page' %}" class="back-link">← Назад в каталог</a>
           <h1>{{ book.title }}</h1>
           <div class="author">{{ book.author }}</div>
           <div class="small">Опубликовано: {{ book.published_date|default:"—" }}</div>
@@ -126,6 +125,11 @@
                 <button type="submit" class="btn btn--primary">💳 Купить за {{ book.price }}₽</button>
               </form>
               <a class="btn btn--ghost" href="{% url 'home_page' %}">← Вернуться</a>
+            {% endif %}
+            {% if book.owner == request.user %}
+              <form method="get" action="{% url 'delete_book' book.id %}">
+                  <button style="margin-top:15px;">🗑️ Удалить книгу</button>
+              </form>
             {% endif %}
           </div>
         </div>

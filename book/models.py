@@ -6,14 +6,19 @@ from django.conf import settings
 from pdf2image import convert_from_path
 import os
 from django.db import models
+from django.utils import timezone
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.CharField(max_length=255)
-    file = models.FileField(upload_to='books/', blank=True, null=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    cover = models.ImageField(upload_to='covers/', blank=True)
+    published_date = models.DateField(default=timezone.now)
+    file = models.FileField(upload_to='books/', blank=True, null=False)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0, null=False)
+    cover = models.ImageField(upload_to='covers/', blank=True, null=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='my_books', null = True)
+
 
 @method_decorator(login_required, name='dispatch')
 class BookDetailView(DetailView):
